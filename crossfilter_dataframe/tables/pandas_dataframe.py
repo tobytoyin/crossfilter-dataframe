@@ -1,11 +1,12 @@
 import pandas as pd
-from base import Table
+
+from .base import Table
 
 
 class PandasTable(Table):
     _table: pd.DataFrame
 
-    def _pkeys_table(self, fkeys):
+    def _fkeys_table(self, fkeys):
         return self.data[fkeys]
     
     def filter(self, query_string):
@@ -14,7 +15,7 @@ class PandasTable(Table):
     def join(self, other: Table, fkeys, pkeys):
         _other: pd.DataFrame = other.data
         result = _other.merge(
-            self._pkeys_table(fkeys),
+            self._fkeys_table(fkeys),
             left_on=fkeys,
             right_on=pkeys,
             how='inner',
@@ -35,7 +36,7 @@ if __name__ == '__main__':
     table2.set_downstreams([(table3, ['col2'], ['col2'])])
 
     table1.filter('pk1 == 2')
-    table1.crossfilter()
+    table1.downstream_filter()
 
     print(table2.data)
     print(table3.data)

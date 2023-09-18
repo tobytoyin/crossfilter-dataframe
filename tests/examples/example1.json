@@ -1,11 +1,22 @@
 {
   "Table1": {
-    "Table2": ["pk1"], 
-    "Table3": ["pk1"]
+    "Table2": {
+      "pkeys": ["pk1"],
+      "fkeys": ["pk1"]
+    },
+    "Table3": {
+      "pkeys": ["pk1"], 
+      "fkeys": ["pk1"]
+    }
   }, 
   "Table3": {
-    "Table4": ["pk2"], 
-    "Table1": ["pk1"]
-
+    "Table4": {
+      "pkeys": ["pk2"], 
+      "fkeys": ["pk2"]
+    }, 
+    "Table1": {
+      "pkeys": ["pk1"], 
+      "fkeys": ["pk1"]
+    }
   }
 }
