@@ -1,0 +1,15 @@
+Table1: 
+  Table4: 
+    pkeys: [k1]
+    fkeys: [k1]
+
+Table2: 
+  Table4: 
+    pkeys: [k2]
+    fkeys: [k2]
+
+Table3: 
+  Table4: 
+    pkeys: [k3]
+    fkeys: [k3]
+
