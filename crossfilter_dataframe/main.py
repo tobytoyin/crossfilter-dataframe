@@ -11,18 +11,19 @@ from crossfilter_dataframe.graphs.dag import DAGExecutor, DAGProcessor
 from crossfilter_dataframe.graphs.loader.loader import JSONLoader, YAMLLoader
 from crossfilter_dataframe.tables import PandasTable
 
-G = YAMLLoader().load_network('tests/examples/example1.yaml')
+loader = YAMLLoader()
+G = loader.load_network('tests/examples/3-1-1.yaml')
 
 dag = DAGProcessor(G)
-# dag.process('Table3')
+dag.process('Table2')
 
 
-from crossfilter_dataframe.graphs.dag.utils import get_nodes_traversals
+# from crossfilter_dataframe.graphs.dag.utils import get_nodes_traversals
 
-# for at_node in ['Table1']:
-dag.process('Table1')
-traversals = get_nodes_traversals(dag)
-print(traversals)
+# # for at_node in ['Table1']:
+# dag.process('Table1')
+# traversals = get_nodes_traversals(dag)
+# print(traversals)
 
 nx.draw(dag.dag, with_labels=True)
 plt.show()

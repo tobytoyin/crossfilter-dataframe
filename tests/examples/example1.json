@@ -1,10 +1,10 @@
 {
   "Table1": {
-    "Table2": {
+    "Table3": {
       "pkeys": ["pk1"],
       "fkeys": ["pk1"]
     },
-    "Table3": {
+    "Table2": {
       "pkeys": ["pk1"], 
       "fkeys": ["pk1"]
     }

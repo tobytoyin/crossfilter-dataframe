@@ -60,7 +60,7 @@ class DAGProcessor:
             self.hop_neighbors(node)
 
     def process(self, start_root) -> nx.DiGraph:
-        print(f"----- CREATING DAG STARTING AT {start_root} -----")
+        print(f"\r----- CREATING DAG STARTING AT {start_root} -----")
         # setup: refresh dag with at start_root & reset completed upstream
         self.dag = self.graph.to_directed().copy()
         self.upstream_parents = []
