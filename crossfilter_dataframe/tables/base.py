@@ -111,8 +111,8 @@ class Table(TableAdapter):
 
         # filter join on all tables in this layer
         # before crossfiltering the children tables
-        for rel in self.dwnstream_rel:
-            self.join(rel.table, rel.pkeys, rel.fkeys)
+        for table, pkeys, fkeys in self.dwnstream_rel:
+            self.join(other=table, l_keys=pkeys, r_keys=fkeys)
 
         # invoke children tables to crossfilter followafter
         for other, _, _ in self.dwnstream_rel:
