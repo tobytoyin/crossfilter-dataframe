@@ -80,16 +80,16 @@ class Table(TableAdapter):
         
         
     ### Table filers & Joins operations
-    def join(self, other: Table, pkeys: List[str], fkeys: List[str]):
+    def join(self, other: Table, l_keys: List[str], r_keys: List[str]):
         """Join the downstream table with an filtered upstream table\
             then update the downstream to reflect what has been filtered
 
         Args:
             other (Table): _description_
-            pkeys (List[str]): list of public keys of the left table
-            fkeys (List[str]): list of foreign keys of the right table
+            l_keys (List[str]): list of public keys of the left table
+            r_keys (List[str]): list of foreign keys of the right table
         """
-        updated_other = self.join_fn(other.data, self.distinct_index_table(pkeys), fkeys, pkeys)
+        updated_other = self.join_fn(other.data, self.distinct_index_table(l_keys), r_keys, l_keys)
         other(updated_other)  # update the other table with new data
             
     def filter(self, *args, **kwargs):
@@ -111,8 +111,8 @@ class Table(TableAdapter):
 
         # filter join on all tables in this layer
         # before crossfiltering the children tables
-        for other, fkeys, pkeys in self.dwnstream_rel:
-            self.join(other, fkeys, pkeys)
+        for rel in self.dwnstream_rel:
+            self.join(rel.table, rel.pkeys, rel.fkeys)
 
         # invoke children tables to crossfilter followafter
         for other, _, _ in self.dwnstream_rel:

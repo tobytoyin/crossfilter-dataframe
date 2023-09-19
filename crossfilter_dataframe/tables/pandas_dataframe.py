@@ -21,29 +21,7 @@ class PandasTable(Table):
 
 
 if __name__ == '__main__':
-    df1 = pd.DataFrame({'pkey1': [1, 2, 3, 4], 
-                        'col1': 'a b c d'.split()})
-    df2 = pd.DataFrame({'fkey1': [1, 1, 2, 2], 
-                        'col2':  'item1 item2 item3 item4'.split()})
-    
-    filter_df1 = pd.DataFrame({'pkey1': [1], 
-                               'col1': 'a'.split()})
-    filter_df2 = pd.DataFrame({'fkey1': [1, 1], 
-                               'col2':  'item1 item2'.split()})                               
-    
-    table1 = PandasTable(df1)
-    table2 = PandasTable(df2)
-    
-    table1.set_downstreams([(table2, ['pkey1'], ['fkey1'])])
-    table1.filter('pkey1 == 1')
-    
-    print(table2.collect())
-    print(filter_df2)
-    print(table1.collect().equals(filter_df1))
-    
-    # assert table1.collect() == filter_df1
-    # assert table2.collect() == filter_df2    
-
+    pass
 # # # 
 # #     print(table1())
 # #     print(table2())
