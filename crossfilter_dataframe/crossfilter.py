@@ -1,6 +1,8 @@
-from base import Table, TableRelation
 from typing import Mapping
-from dataclasses import dataclass
+
+from tables import Table
+from tables.types import TableRelation
+
 
 class TableFilterProtocol:
     tables: Mapping[str, Table] = {}

@@ -14,24 +14,23 @@ class Loader(ABC):
         super().__init__()
 
     @abstractmethod
-    def loader_callback(self, path) -> dict:
+    def loader_callback(self, *args, **kwargs) -> dict:
         # implementation class can select one of the below loader function
-        NotImplementedError
+        ...
 
-    def load_network(self, path: str) -> nx.Graph:
-        network = self.load_relations(path)
+    def load_network(self, *args, **kwargs) -> nx.Graph:
+        network = self._load_relations(*args, **kwargs)
         g = nx.Graph()
 
         for key, childnodes in network.items():
-            # add nodes
             g.add_node(key)
             g.add_edges_from(parse_edges_tuples(key, [*childnodes]))
 
         return g
 
-    def load_relations(self, path: str) -> dict:
+    def _load_relations(self, *args, **kwargs,) -> dict:
         if self.network:
             return self.network
 
-        self.network = self.loader_callback(path)
+        self.network = self.loader_callback(*args, **kwargs)
         return self.network

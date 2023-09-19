@@ -1,5 +1,8 @@
 import networkx as nx
 
+from ...logger import logging
+from ..types import ROOT
+
 
 class DAGProcessor:
     """Turns Undirected Relational Graph into a DAG at a defined starting root
@@ -9,12 +12,11 @@ class DAGProcessor:
         takes a walk along all the NODES and turn convert bi-directional into uni-directional
     """
 
-    def __init__(self, graph: nx.Graph, verbose=0) -> None:
+    def __init__(self, graph: nx.Graph) -> None:
         self.graph = graph.copy()
         self.dag = None
         self.upstream_parents = None
         self.prev_completed_upstream = None
-        self._verbose = verbose
         
     @staticmethod
     def set_oneway_direction(graph: nx.DiGraph, root, upstream_parents: list = None):
@@ -36,23 +38,23 @@ class DAGProcessor:
         for in_node, _ in in_edges:
             # ignore if in_edges is part of the parents edges
             if in_node in upstream_parents:
-                print(">>", upstream_parents)
+                logging.debug(f"ignore direction (upstream parents): {upstream_parents}")
                 continue
 
             graph.remove_edge(in_node, root)
 
-    def hop_neighbors(self, root):
+    def hop_neighbors(self, root: str):
         # Start walking the bi-directed DAG from ROOT
-        print(f"AT {root}")
+        logging.debug(f"AT {root}")
 
         # NODES that has already been fixed (uni-directed) are ignored
         walkable_nodes = set(self.dag.neighbors(root)) - set(self.upstream_parents)
-        print("  walkable nodes: ", walkable_nodes)
+        logging.debug(f"walkable nodes: {walkable_nodes}")
 
         # fixes bi-directed pairs to uni-directed pairs to create DAG
         # e.g., (ROOT) <-> (NODE1) converts into (ROOT) --> (NODE1)
         for node in walkable_nodes:
-            print(f"  setting unidirection from {root} -> {node}")
+            logging.debug(f"setting unidirection from {root} -> {node}")
             self.set_oneway_direction(self.dag, root, self.upstream_parents)
 
         self.upstream_parents.append(root)
@@ -60,7 +62,7 @@ class DAGProcessor:
             self.hop_neighbors(node)
 
     def process(self, start_root) -> nx.DiGraph:
-        print(f"\r----- CREATING DAG STARTING AT {start_root} -----")
+        logging.debug(f"\r----- CREATING DAG STARTING AT {start_root} -----")
         # setup: refresh dag with at start_root & reset completed upstream
         self.dag = self.graph.to_directed().copy()
         self.upstream_parents = []
@@ -68,6 +70,6 @@ class DAGProcessor:
         self.hop_neighbors(start_root)
         
         # add root entry
-        self.dag.add_edge('ROOT', start_root)
+        self.dag.add_edge(ROOT, start_root)
         
         return self.dag

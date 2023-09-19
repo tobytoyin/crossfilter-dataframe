@@ -3,10 +3,9 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from collections import namedtuple
 from dataclasses import dataclass, field
-from typing import Any, List, Tuple, Type, Union, Callable, TypeVar
+from typing import Any, Callable, List, Tuple, Type, TypeVar, Union
 
-TableRelation = namedtuple('TableRelation', 'table fkeys pkeys')
-Data = TypeVar('Data')  # typing for external side data structure
+from .types import Data, TableRelation
 
 
 @dataclass
@@ -30,7 +29,7 @@ class TableAdapter(ABC):
     @abstractmethod
     def distinct_index_table(self, keys) -> Data:
         """return a table with only foreign keys"""
-        raise NotImplementedError
+        ...
 
     @abstractmethod
     def filter_fn(self, data: Data, *args, **kwargs) -> Data:
@@ -43,7 +42,7 @@ class TableAdapter(ABC):
         Raises:
             NotImplementedError:
         """
-        raise NotImplementedError
+        ...
 
     @abstractmethod
     def join_fn(self, /, 
@@ -61,7 +60,7 @@ class TableAdapter(ABC):
         Raises:
             NotImplementedError: implementation of join function required
         """
-        raise NotImplementedError    
+        ...
 
 
 @dataclass
