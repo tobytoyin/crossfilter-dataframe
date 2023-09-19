@@ -3,10 +3,12 @@ from typing import Mapping
 from tables import Table
 from tables.types import TableRelation
 
+from .types import FOREIGN_KEY, PRIMARY_KEY, RelationalMap
+
 
 class TableFilterProtocol:
     tables: Mapping[str, Table] = {}
-    join_keys = {}
+    join_keys: RelationalMap = {}
     
     def build_downstream(self, root: str, dwnstream: str):
         # find the table from the map
@@ -21,8 +23,8 @@ class TableFilterProtocol:
         # get the keys     
         keys = self.join_keys.get(root).get(dwnstream)
         relations = TableRelation(table=next_table, 
-                                  fkeys=keys.get('fkeys'),
-                                  pkeys=keys.get('pkeys'))
+                                  fkeys=keys.get(PRIMARY_KEY),
+                                  pkeys=keys.get(FOREIGN_KEY))
         
         root_table.add_downstream(relations)
         

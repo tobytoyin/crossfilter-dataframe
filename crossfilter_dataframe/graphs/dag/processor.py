@@ -1,7 +1,9 @@
+from typing import List, Optional
+
 import networkx as nx
 
 from ...logger import logging
-from ..types import ROOT
+from ...types import ROOT_NODE
 
 
 class DAGProcessor:
@@ -16,10 +18,13 @@ class DAGProcessor:
         self.graph = graph.copy()
         self.dag = None
         self.upstream_parents = None
-        self.prev_completed_upstream = None
-        
+
     @staticmethod
-    def set_oneway_direction(graph: nx.DiGraph, root, upstream_parents: list = None):
+    def set_oneway_direction(
+        graph: nx.DiGraph,
+        node: str,
+        upstream_parents: Optional[List[str]] = None,
+    ):
         """Given a DiGraph, converts bi-directional nodes into uni-directional.
         
         - [ (ROOT) <-> (NODE_N) ] converts all into [ (ROOT) --> (NODE_N) ]
@@ -27,11 +32,11 @@ class DAGProcessor:
 
         Args:
             graph (nx.DiGraph): nx.Directed Graph
-            root (any): the ROOT node which the uni-directional starts
+            node (any): the current node which the uni-directional starts
             parent_in_edges (list, optional): list of NODEs that belongs to the DAG upstream NODEs of ROOT. \
                 These NODEs are preserved as these incoming directions are intended. Defaults to None.
         """
-        in_edges = list(graph.in_edges(root))
+        in_edges = list(graph.in_edges(node))
 
         # gather all nodes that are directed into root
         # and remove them as to forece uni-direction
@@ -41,7 +46,7 @@ class DAGProcessor:
                 logging.debug(f"ignore direction (upstream parents): {upstream_parents}")
                 continue
 
-            graph.remove_edge(in_node, root)
+            graph.remove_edge(in_node, node)
 
     def hop_neighbors(self, root: str):
         # Start walking the bi-directed DAG from ROOT
@@ -66,10 +71,10 @@ class DAGProcessor:
         # setup: refresh dag with at start_root & reset completed upstream
         self.dag = self.graph.to_directed().copy()
         self.upstream_parents = []
-        
+
         self.hop_neighbors(start_root)
-        
+
         # add root entry
-        self.dag.add_edge(ROOT, start_root)
-        
+        self.dag.add_edge(ROOT_NODE, start_root)
+
         return self.dag

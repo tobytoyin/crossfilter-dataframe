@@ -2,7 +2,7 @@ from typing import Any, List
 
 import networkx as nx
 
-from ..types import ROOT, NodeCallbackFn
+from ...types import ROOT_NODE, NodeCallbackFn
 
 
 class DAGExecutor:
@@ -18,7 +18,12 @@ class DAGExecutor:
         """Steps to do when the walk first initially starts"""
         self.callbacks_results = []
 
-    def walk(self, start=ROOT):
+    def walk(self, start=ROOT_NODE):
+        """Walk the DAG, execute all callbacks for each node hops
+
+        Args:
+            start (_type_, optional): _description_. Defaults to ROOT_NODE.
+        """
         self._initial_walk_procedure()
 
         for node in self.walk_order:
@@ -28,7 +33,14 @@ class DAGExecutor:
             self._call_functions_on_neightbours(node)
 
     def _call_functions_on_neightbours(self, node: str, skip_root=True):
-        if skip_root and node == ROOT:
+        """Invoke all the NodeCallbackFn functions given the context of \
+            the string value of the current node and downstream node
+
+        Args:
+            node (str): string value of the current node in the DAG
+            skip_root (bool, optional): _description_. Defaults to True.
+        """
+        if skip_root and node == ROOT_NODE:
             return
 
         for _, next_node in self.dag.out_edges(node):

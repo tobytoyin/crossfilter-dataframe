@@ -2,6 +2,8 @@ from abc import ABC, abstractmethod
 
 import networkx as nx
 
+from ...types import RelationalMap
+
 
 def parse_edges_tuples(parent: str, children: list):
     res = [(parent, child) for child in children]
@@ -14,7 +16,7 @@ class Loader(ABC):
         super().__init__()
 
     @abstractmethod
-    def loader_callback(self, *args, **kwargs) -> dict:
+    def loader_callback(self, *args, **kwargs) -> RelationalMap:
         # implementation class can select one of the below loader function
         ...
 
@@ -28,7 +30,7 @@ class Loader(ABC):
 
         return g
 
-    def _load_relations(self, *args, **kwargs,) -> dict:
+    def _load_relations(self, *args, **kwargs,) -> RelationalMap:
         if self.network:
             return self.network
 
