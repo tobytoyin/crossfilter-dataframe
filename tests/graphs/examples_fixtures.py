@@ -3,7 +3,7 @@ from collections import namedtuple
 
 from pytest import fixture
 
-TEST_JSON_DIR = 'tests/examples/'
+TEST_JSON_DIR = 'tests/examples/specs/'
 TestOutcome = namedtuple('TestOutcome', 'paths expected_edges')
 
 
