@@ -1,47 +1,34 @@
-from typing import Mapping
-
-from tables import Table
-from tables.types import TableRelation
-
-from .types import FOREIGN_KEY, PRIMARY_KEY, RelationalMap
+from crossfilter_dataframe.graphs.dag import DAGExecutor, DAGProcessor
+from crossfilter_dataframe.logger import logging
+from crossfilter_dataframe.tables.manager import TablesManager
 
 
-class TableFilterProtocol:
-    tables: Mapping[str, Table] = {}
-    join_keys: RelationalMap = {}
+class CrossFilters:
+    def __init__(self, tables_manager: TablesManager, relational_graph):
+        # stateful processor - graph is the same, just direct is different
+        self.processor = DAGProcessor(graph=relational_graph)
+        self.tables_manager = tables_manager  # container fns to interact with tables
     
-    def build_downstream(self, root: str, dwnstream: str):
-        # find the table from the map
-        # create downstream tables for filtering
-        # and pass it to DAGExecutor.callback
+    def _executor_build_filters_orders(self, dag):
+        executor = DAGExecutor(dag=dag)
+        executor.add_callback(self.tables_manager.build_downstream)
+        executor.walk()
         
-        root_table = self.tables.get(root, None)  # these are ptr back the _tables
-        next_table = self.tables.get(dwnstream, None)
-        
-        assert all([root_table, next_table]), "some Name is not set"
-        
-        # get the keys     
-        keys = self.join_keys.get(root).get(dwnstream)
-        relations = TableRelation(table=next_table, 
-                                  fkeys=keys.get(PRIMARY_KEY),
-                                  pkeys=keys.get(FOREIGN_KEY))
-        
-        root_table.add_downstream(relations)
-        
+        return executor.callbacks_results
     
-    def reset_all_dwnstreams(self):
-        for table in self.tables.values():
-            table.clear_downstreams()
+    def _apply_filter_on_tables(self, _key: str, *args, **kwargs):
+        start_table = self.tables_manager.get_table(_key)
+        start_table.filter(*args, **kwargs)
 
-    
-    def filter_start_at(self, _key: str, *filter_fn_args, **filter_fn_kwargs):
-        start_table = self.tables.get(_key)
-        start_table.filter(*filter_fn_args, **filter_fn_kwargs)
-        
         # once the filter chain is completed, reset all the downstreams
-        self.reset_all_dwnstreams()
-        
-
+        self.tables_manager.reset_all_dwnstreams()
+    
+    def filter(self, start_table_key: str, *filter_args, **filter_kwargs):
+        # when filter starts, use a relational graph to convert to a DAG
+        dag = self.processor.process(start_root=start_table_key)
+        results = self._executor_build_filters_orders(dag)
+        self._apply_filter_on_tables(start_table_key, *filter_args, **filter_kwargs)
+                
         
 if __name__ == '__main__':
     pass

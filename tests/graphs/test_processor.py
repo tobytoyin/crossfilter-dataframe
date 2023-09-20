@@ -1,6 +1,6 @@
 from crossfilter_dataframe.graphs.dag import DAGProcessor
 from crossfilter_dataframe.graphs.dag.utils import get_nodes_traversals
-from crossfilter_dataframe.graphs.loader import YAMLLoader
+from crossfilter_dataframe.graphs.loaders import YAMLLoader
 
 from .examples_fixtures import *
 

@@ -1,4 +1,4 @@
-from crossfilter_dataframe.graphs.loader import JSONLoader, YAMLLoader
+from crossfilter_dataframe.graphs.loaders import JSONLoader, YAMLLoader
 
 from .examples_fixtures import *
 

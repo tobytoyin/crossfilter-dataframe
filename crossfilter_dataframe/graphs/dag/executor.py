@@ -2,6 +2,7 @@ from typing import Any, List
 
 import networkx as nx
 
+from ...logger import logging
 from ...types import ROOT_NODE, NodeCallbackFn
 
 
@@ -25,14 +26,10 @@ class DAGExecutor:
             start (_type_, optional): _description_. Defaults to ROOT_NODE.
         """
         self._initial_walk_procedure()
-
         for node in self.walk_order:
-            if node != start:
-                continue
-
             self._call_functions_on_neightbours(node)
 
-    def _call_functions_on_neightbours(self, node: str, skip_root=True):
+    def _call_functions_on_neightbours(self, node: str):
         """Invoke all the NodeCallbackFn functions given the context of \
             the string value of the current node and downstream node
 
@@ -40,7 +37,7 @@ class DAGExecutor:
             node (str): string value of the current node in the DAG
             skip_root (bool, optional): _description_. Defaults to True.
         """
-        if skip_root and node == ROOT_NODE:
+        if node == ROOT_NODE:
             return
 
         for _, next_node in self.dag.out_edges(node):

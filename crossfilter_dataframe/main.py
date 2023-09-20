@@ -8,11 +8,11 @@ import networkx as nx
 import pandas as pd
 
 from crossfilter_dataframe.graphs.dag import DAGExecutor, DAGProcessor
-from crossfilter_dataframe.graphs.loader.loader import JSONLoader, YAMLLoader
+from crossfilter_dataframe.graphs.loaders.loaders import JSONLoader, YAMLLoader
 from crossfilter_dataframe.tables import PandasTable
 
 loader = YAMLLoader()
-G = loader.load_network('tests/examples/3-1-1.yaml')
+G = loader.load_network('tests/examples/specs/3-1-1.yaml')
 
 dag = DAGProcessor(G)
 dag.process('Table2')
@@ -27,6 +27,10 @@ dag.process('Table2')
 
 nx.draw(dag.dag, with_labels=True)
 plt.show()
+
+
+print(nx.to_dict_of_dicts(dag.dag, edge_data=True))
+
 
 
 
