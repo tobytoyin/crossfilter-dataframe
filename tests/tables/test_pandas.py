@@ -1,6 +1,19 @@
 import pandas as pd
 from crossfilter_dataframe.tables import PandasTable
 
+
+def test_table_can_reset():
+    df1 = pd.DataFrame({'pkey1': [1, 2, 3, 4]})
+    table1 = PandasTable(df1)
+    
+    table1.filter('pkey1 == 1')
+    _ = table1.collect()
+    
+    table1.reset()
+    assert table1.collect().equals(df1)
+    
+
+
 def test_1_way_1_table_filter():
     # direct key map relational key filtering
     # (filter) -> [df1] -> [df2]

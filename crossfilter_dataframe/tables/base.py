@@ -10,8 +10,12 @@ from ..types import Data, Keys, TableRelation
 @dataclass
 class TableAdapter(ABC):
     """Adapter to translate the adaptee module functions as an interface for `Table`"""
+    data: Data 
 
-    data: Data
+    
+    def __post_init__(self):
+        self.source = self.data.copy()  # copy of the original data
+
 
     def __call__(self, *args) -> Data:
         """.data can be lazily evaluated through session. __call__ would collect data"""
@@ -23,6 +27,10 @@ class TableAdapter(ABC):
     def collect(self) -> Data:
         """Return the materialised data of the Table"""
         return self()
+    
+    def reset(self) -> None:
+        """Reset the current state of `data` back to original state"""
+        self.data = self.source.copy()
 
     @abstractmethod
     def distinct_index_table(self, keys: Keys) -> Data:

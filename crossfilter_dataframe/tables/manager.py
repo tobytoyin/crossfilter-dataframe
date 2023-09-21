@@ -1,4 +1,4 @@
-from typing import Mapping
+from typing import Mapping, Optional
 
 from ..logger import logging
 from ..types import FOREIGN_KEY, PRIMARY_KEY, RelationalMap, TableRelation
@@ -8,8 +8,14 @@ from . import Table
 class TablesManager:
     """class contains methods to manage map of tables and relationships"""
 
-    tables: Mapping[str, Table] = {}
-    join_keys: RelationalMap = {}
+    def __init__(
+        self,
+        tables: Optional[Mapping[str, Table]] = None,
+        relations_map: Optional[RelationalMap] = None,
+    ) -> None:
+        
+        self.tables: Mapping[str, Table] = tables if tables else {}
+        self.join_keys: RelationalMap = relations_map if relations_map else {}
 
     def add_table(self, _key: str, table: Table):
         self.tables[_key] = table
