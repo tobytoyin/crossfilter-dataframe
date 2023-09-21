@@ -40,12 +40,12 @@ class TablesManager:
         # create downstream tables for filtering
         # and pass it to DAGExecutor.callback
 
-        root_table = self.tables.get(root, None)  # these are ptr back the _tables
-        next_table = self.tables.get(dwnstream, None)
+        root_table = self.tables[root]  # these are ptr back the _tables
+        next_table = self.tables[dwnstream]
 
         assert all([root_table, next_table]), "some Name is not set"
 
         # get the keys
-        keys = self.join_keys.get(root).get(dwnstream)
-        relations = TableRelation(table=next_table, fkeys=keys.get(PRIMARY_KEY), pkeys=keys.get(FOREIGN_KEY))
+        keys = self.join_keys[root][dwnstream]
+        relations = TableRelation(table=next_table, fkeys=keys[PRIMARY_KEY], pkeys=keys[FOREIGN_KEY])
         root_table.add_downstream(relations)
