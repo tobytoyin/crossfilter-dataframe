@@ -1,9 +1,10 @@
-from ..types import Data
+from ..types import Data, Literal
 from .base import Table
 from .pandas_dataframe import PandasTable
 
+Keys = Literal['pandas']
 
-def table_factory(table_type: str, data: Data) -> Table:
+def table_factory(table_type: Keys, data: Data) -> Table:
     _map = {
         'pandas': PandasTable
     }
