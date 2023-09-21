@@ -4,10 +4,10 @@ from crossfilter_dataframe.manager import TablesManager
 
 
 class CrossFilters:
-    def __init__(self, tables_manager: TablesManager, relational_graph):
+    def __init__(self, tables_manager: TablesManager):
         # stateful processor - graph is the same, just direct is different
-        self.processor = DAGProcessor(graph=relational_graph)
         self.tables_manager = tables_manager  # container fns to interact with tables
+        self.processor = DAGProcessor(graph=self.tables_manager.tables_graph)
     
     def _executor_build_filters_orders(self, dag):
         executor = DAGExecutor(dag=dag)

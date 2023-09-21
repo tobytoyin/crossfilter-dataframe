@@ -37,18 +37,15 @@ relations = {
 }
 
 # create graph based on relations 
-loader = DictLoader()
-graph = loader.get_network(relations)
-relations_map = loader.relational_map
+loader = DictLoader(data=relations)
     
 # setup
-tables = TablesManager()
+tables = TablesManager(spec_loader=loader)
 tables.add_table('Table1', PandasTable(df1)) 
 tables.add_table('Table2', PandasTable(df2)) 
-tables.set_relations(relation_map=relations_map)
 
 # prepare for filter
-filters = CrossFilters(tables_manager=tables, relational_graph=graph)
+filters = CrossFilters(tables_manager=tables)
 filters.filter('Table1', 'pkey1 == 1')
 
 print(filters.tables_manager.tables['Table1'])
