@@ -1,8 +1,6 @@
 __version__ = '0.1.0'
 
 from .crossfilter import CrossFilters
-
-__all__ = [
-    'tables', 
-    'graphs',
-]
+from .graphs.loaders import loader_factory
+from .manager import TablesManager
+from .tables import table_factory

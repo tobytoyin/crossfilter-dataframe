@@ -18,9 +18,12 @@ pip3 install ./dist/<package>.whl
 `crossfilter-dataframe` aims to provide a simplified interface to filter down relational dataframes. For example:
 
 ```python
-from crossfilter_dataframe import CrossFilters
-from crossfilter_dataframe.graphs.loaders import DictLoader
-from crossfilter_dataframe.tables import PandasTable, TablesManager
+from crossfilter_dataframe import (
+    CrossFilters, 
+    TablesManager, 
+    loader_factory,
+    table_factory
+)
 
 # setup dataframes
 df1 = pd.DataFrame({'pkey1': [1, 2, 3, 4], 'col1': 'a b c d'.split()})
@@ -37,12 +40,12 @@ relations = {
 }
 
 # create graph based on relations 
-loader = DictLoader(data=relations)
+loader = loader_factory(kind='dict')(data=relations)
     
 # setup
 tables = TablesManager(spec_loader=loader)
-tables.add_table('Table1', PandasTable(df1)) 
-tables.add_table('Table2', PandasTable(df2)) 
+tables.add_table('Table1', table_factory('pandas', df1)) 
+tables.add_table('Table2', table_factory('pandas', df2)) 
 
 # prepare for filter
 filters = CrossFilters(tables_manager=tables)
