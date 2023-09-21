@@ -4,7 +4,7 @@ from crossfilter_dataframe import (CrossFilters, TablesManager, loader_factory,
                                    table_factory)
 
 
-def test_simple_protocol():
+def test_simple_filter():
     
     df1 = pd.DataFrame({'pkey1': [1, 2, 3, 4], 
                         'col1': 'a b c d'.split()})
@@ -35,7 +35,8 @@ def test_simple_protocol():
     filters.filter('Table2', 'fkey1 == 1')
     
     # test
-    assert 
+    df1_expected = df1.query('pkey1 == 1')
+    df2_expected = df2.query('fkey1 == 1')
     
-    print(filters.tables_manager.tables['Table1'])
-    print(filters.tables_manager.tables['Table2'])
+    assert filters.collect('Table1').equals(df1_expected)
+    assert filters.collect('Table2').equals(df2_expected)

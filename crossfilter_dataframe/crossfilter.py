@@ -28,6 +28,9 @@ class CrossFilters:
         dag = self.processor.process(start_root=start_table_key)
         results = self._executor_build_filters_orders(dag)
         self._apply_filter_on_tables(start_table_key, *filter_args, **filter_kwargs)
+        
+    def collect(self, _key: str):
+        return self.tables_manager.get_table(_key).collect()
                 
         
 if __name__ == '__main__':

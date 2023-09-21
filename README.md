@@ -51,7 +51,8 @@ tables.add_table('Table2', table_factory('pandas', df2))
 filters = CrossFilters(tables_manager=tables)
 filters.filter('Table1', 'pkey1 == 1')
 
-print(filters.tables_manager.tables['Table1'])
-print(filters.tables_manager.tables['Table2'])
+# collect data
+filtered_df1 = filters.collect('Table1')
+filtered_df2 = filters.collect('Table2')
 
 ```
