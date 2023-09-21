@@ -2,11 +2,12 @@ from abc import ABC, abstractmethod
 from inspect import getfullargspec
 
 import networkx as nx
+
 from crossfilter_dataframe.graphs.utils import (add_edges_from_map,
                                                 invert_keys_elements)
 
 from ...logger import logging
-from ...types import RelationalMap
+from ...types import FOREIGN_KEY, PRIMARY_KEY, RelationalMap
 
 
 class Loader(ABC):
@@ -56,7 +57,7 @@ class Loader(ABC):
         # for nodes that have the fkeys->pkeys reverse rel, and reverse the key:
         # l_tab.pkeys -> r_tab.fkeys ==> r_tab.pkeys --> l_tab.fkeys
         res = {}
-        invert_fn = lambda d: invert_keys_elements(d, ('pkeys', 'fkeys'))
+        invert_fn = lambda d: invert_keys_elements(d, (PRIMARY_KEY, FOREIGN_KEY))
 
         for l_tab, r_tabs in d.items():
             res[l_tab] = {k: invert_fn(v) for k, v in r_tabs.items()}
