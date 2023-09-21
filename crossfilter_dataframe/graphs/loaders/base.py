@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from inspect import getfullargspec
+from typing import Optional
 
 import networkx as nx
 
@@ -15,8 +16,8 @@ class Loader(ABC):
         self._kwargs = kwargs
         
         self.network = None
-        self.graph: nx.Graph = None
-        self._relational_map: RelationalMap = None
+        self.graph: Optional[nx.Graph] = None
+        self._relational_map: Optional[RelationalMap] = None
         super().__init__()
 
     @abstractmethod

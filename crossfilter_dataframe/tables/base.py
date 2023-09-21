@@ -1,20 +1,20 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from copy import copy
 from dataclasses import dataclass, field
-from typing import List, Type
+from typing import Generic, List
 
 from ..types import Data, Keys, TableRelation
 
 
 @dataclass
-class TableAdapter(ABC):
+class TableAdapter(ABC, Generic[Data]):
     """Adapter to translate the adaptee module functions as an interface for `Table`"""
-    data: Data 
+    data: Data
 
-    
     def __post_init__(self):
-        self.source = self.data.copy()  # copy of the original data
+        self.source = copy(self.data)  # copy of the original data
 
 
     def __call__(self, *args) -> Data:
@@ -30,7 +30,7 @@ class TableAdapter(ABC):
     
     def reset(self) -> None:
         """Reset the current state of `data` back to original state"""
-        self.data = self.source.copy()
+        self.data = copy(self.source)
 
     @abstractmethod
     def distinct_index_table(self, keys: Keys) -> Data:

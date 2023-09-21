@@ -12,14 +12,14 @@ class DAGExecutor:
     def __init__(self, dag: nx.DiGraph) -> None:
         self.dag = dag
         self._callbacks: List[NodeCallbackFn] = []
-        self.callbacks_results: List[Any] = None
+        self.callbacks_results: List[Any] = []
         self.walk_order = nx.topological_sort(self.dag)
 
     def _initial_walk_procedure(self):
         """Steps to do when the walk first initially starts"""
         self.callbacks_results = []
 
-    def walk(self, start=ROOT_NODE):
+    def walk(self):
         """Walk the DAG, execute all callbacks for each node hops
 
         Args:

@@ -1,5 +1,5 @@
 from collections import namedtuple
-from typing import Any, Callable, Dict, List, Literal, TypeVar
+from typing import Any, Callable, Dict, Generic, List, Literal, TypeVar
 
 # Constants
 PRIMARY_KEY = 'pkeys'
