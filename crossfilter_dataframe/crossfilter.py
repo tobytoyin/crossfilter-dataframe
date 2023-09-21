@@ -1,6 +1,6 @@
 from crossfilter_dataframe.graphs.dag import DAGExecutor, DAGProcessor
 from crossfilter_dataframe.logger import logging
-from crossfilter_dataframe.tables.manager import TablesManager
+from crossfilter_dataframe.manager import TablesManager
 
 
 class CrossFilters:

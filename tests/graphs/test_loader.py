@@ -4,8 +4,8 @@ from .examples_fixtures import diff_pkeys_fkeys, example1, many_to_one
 
 
 def test_edges(example1):
-    json_graph = JSONLoader().get_network(example1['paths']['json'])
-    yaml_graph = YAMLLoader().get_network(example1['paths']['yaml'])
+    json_graph = JSONLoader(path=example1['paths']['json']).get_network()
+    yaml_graph = YAMLLoader(path=example1['paths']['yaml']).get_network()
     
     expected = example1['edges']
     
@@ -14,8 +14,8 @@ def test_edges(example1):
     
 
 def test_two_ways_keys_retrieval(many_to_one):
-    loader = YAMLLoader()
-    _ = loader.get_network(many_to_one['paths'])
+    loader = YAMLLoader(path=many_to_one['paths'])
+    _ = loader.get_network()
     relational_map = loader.relational_map
     
     # (Table1) -> (Table4) get
@@ -31,8 +31,8 @@ def test_two_ways_keys_retrieval(many_to_one):
     
 def test_two_ways_pkeys_fkeys_would_flip(diff_pkeys_fkeys):
     """scenario where pkeys & fkeys would flip when the keyed table is reversed"""
-    loader = YAMLLoader()
-    _ = loader.get_network(diff_pkeys_fkeys)
+    loader = YAMLLoader(path=diff_pkeys_fkeys)
+    _ = loader.get_network()
     relational_map = loader.relational_map
     
     # (Table1) -> (Table2) get

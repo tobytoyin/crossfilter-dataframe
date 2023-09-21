@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from inspect import getfullargspec
 
 import networkx as nx
 from crossfilter_dataframe.graphs.utils import (add_edges_from_map,
@@ -9,7 +10,9 @@ from ...types import RelationalMap
 
 
 class Loader(ABC):
-    def __init__(self) -> None:
+    def __init__(self, **kwargs) -> None:
+        self._kwargs = kwargs
+        
         self.network = None
         self.graph: nx.Graph = None
         self._relational_map: RelationalMap = None
@@ -20,8 +23,8 @@ class Loader(ABC):
         # implementation class can select one of the below loader function
         ...
 
-    def get_network(self, *args, **kwargs) -> nx.Graph:
-        network = self._load_network_dict(*args, **kwargs)
+    def get_network(self) -> nx.Graph:
+        network = self._load_network_dict()
         g = nx.Graph()
 
         for key, childnodes in network.items():
@@ -67,6 +70,11 @@ class Loader(ABC):
     ) -> dict:
         if self.network:
             return self.network
+        
+        # check the args in callback and pick from self.kwargs
+        req_kwds = getfullargspec(self._loader_callback).args
+        req_kwds = filter(lambda k: k != 'self', req_kwds)
+        kwargs = { key: self._kwargs[key] for key in req_kwds  }
 
-        self.network = self._loader_callback(*args, **kwargs)
+        self.network = self._loader_callback(**kwargs)
         return self.network

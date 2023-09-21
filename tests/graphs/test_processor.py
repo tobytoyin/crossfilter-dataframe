@@ -6,7 +6,7 @@ from .examples_fixtures import *
 
 
 def test_traversals(example1):
-    graph = YAMLLoader().get_network(example1['paths']['yaml'])
+    graph = YAMLLoader(path=example1['paths']['yaml']).get_network()
     dag = DAGProcessor(graph)
     
     # This contains a list of Nodes to start a DAG with
@@ -24,7 +24,7 @@ def test_traversals(example1):
 def test_one_to_many_traversals(one_to_many):
     fixture = one_to_many
     
-    graph = YAMLLoader().get_network(fixture['paths'])
+    graph = YAMLLoader(path=fixture['paths']).get_network()
     dag = DAGProcessor(graph)
     
     # This contains a list of Nodes to start a DAG with
@@ -42,7 +42,7 @@ def test_one_to_many_traversals(one_to_many):
 def test_many_to_one_traversals(many_to_one):
     fixture = many_to_one
     
-    graph = YAMLLoader().get_network(fixture['paths'])
+    graph = YAMLLoader(path=fixture['paths']).get_network()
     dag = DAGProcessor(graph)
     
     # This contains a list of Nodes to start a DAG with
@@ -60,7 +60,7 @@ def test_many_to_one_traversals(many_to_one):
 def test_3_1_1(graph_3_1_1):
     fixture = graph_3_1_1
     
-    graph = YAMLLoader().get_network(fixture['paths'])
+    graph = YAMLLoader(path=fixture['paths']).get_network()
     dag = DAGProcessor(graph)
     
     # This contains a list of Nodes to start a DAG with
