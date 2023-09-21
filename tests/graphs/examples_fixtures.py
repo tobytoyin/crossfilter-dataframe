@@ -53,6 +53,7 @@ def one_to_many():
         'Table3': set([('ROOT', 'Table3'), ('Table3', 'Table1'), ('Table1', 'Table2'), ('Table1', 'Table4')]),
         'Table4': set([('ROOT', 'Table4'), ('Table4', 'Table1'), ('Table1', 'Table2'), ('Table1', 'Table3')]),
     }
+    
     return {'paths': path, 'edges': expected_edges, 'traversals': expected_traversals}
 
 
@@ -93,3 +94,9 @@ def graph_3_1_1():
                        ('Table6', 'Table4')]),
     }
     return {'paths': path, 'edges': expected_edges, 'traversals': expected_traversals}    
+
+    
+@fixture
+def diff_pkeys_fkeys():
+    path = get_path('diff-pkeys-fkeys.yaml')
+    return path     

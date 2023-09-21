@@ -6,8 +6,8 @@ from .base import Table
 class PandasTable(Table):
     _table: pd.DataFrame
 
-    def distinct_index_table(self, fkeys):
-        return self.data[fkeys].drop_duplicates()
+    def distinct_index_table(self, keys):
+        return self.data[keys].drop_duplicates()
 
     def filter_fn(self, dataframe, query_string):
         return dataframe.query(query_string)

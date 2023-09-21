@@ -1,5 +1,4 @@
 import pandas as pd
-
 from crossfilter_dataframe import CrossFilters
 from crossfilter_dataframe.graphs.loaders import DictLoader
 from crossfilter_dataframe.tables import PandasTable, TablesManager
@@ -24,14 +23,16 @@ def test_simple_protocol():
     }
     
     # create graph based on relations 
-    graph = DictLoader().load_network(relations)
+    loader = DictLoader()
+    graph = loader.get_network(relations)
+    relations_map = loader.relational_map
     
-    tables = TablesManager()
         
     # setup
+    tables = TablesManager()
     tables.add_table('Table1', PandasTable(df1)) 
     tables.add_table('Table2', PandasTable(df2)) 
-    tables.set_relations(relation_map=relations)
+    tables.set_relations(relation_map=relations_map)
     
     # prepare for filter
     filters = CrossFilters(tables_manager=tables, relational_graph=graph)
@@ -50,4 +51,5 @@ def test_simple_protocol():
 # manager.filter_start_at('Table1', 'pkey1 == 1')
 
 # print(manager._tables['Table1'])
+# print(manager._tables['Table2'])  
 # print(manager._tables['Table2'])  
