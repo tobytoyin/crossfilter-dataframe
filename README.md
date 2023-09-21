@@ -1,10 +1,20 @@
 # crossfilter-dataframe
 
-## Use it locally
+## Local Development
+
 ```shell
 poetry shell
 poetry install
 ```
+
+Run tests & type check: 
+```shell
+clear && poetry run mypy crossfilter_dataframe
+
+clear && poetry run pytest -s --log-cli-level=DEBUG
+```
+
+---
 
 ## Build from source
 ```shell
@@ -14,8 +24,10 @@ source .venv/bin/activate  # start any virtual env
 pip3 install ./dist/<package>.whl
 ```
 
+---
+
 ## Usage
-`crossfilter-dataframe` aims to provide a simplified interface to filter down relational dataframes. For example:
+`crossfilter-dataframe` aims to provide a simplified interface to filter down relational dataframes. For example, we want to apply a filter on `df1.query('pkey1 == 1')` and reflect these changes on other tables `df1` related to: 
 
 ```python
 from crossfilter_dataframe import (
