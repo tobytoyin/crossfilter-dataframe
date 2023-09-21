@@ -1,0 +1,4 @@
+Table1: 
+  Table2: 
+    pkeys: [col_1, col_2]
+    fkeys: [col_1_id, col_2_id]
