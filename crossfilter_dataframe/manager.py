@@ -4,7 +4,7 @@ from crossfilter_dataframe.graphs.loaders.base import Loader
 from crossfilter_dataframe.tables.base import Table
 
 from .logger import logging
-from .types import FOREIGN_KEY, PRIMARY_KEY, RelationalMap, TableRelation
+from .types import FOREIGN_KEY, PRIMARY_KEY, Data, RelationalMap, TableRelation
 
 
 class TablesManager:
@@ -30,9 +30,18 @@ class TablesManager:
     def get_table(self, _key: str) -> Table:
         return self.tables[_key]
     
-    def reset_table(self):
+    def collect(self, _key: str) -> Data:
+        """return the materialised data"""
+        return self.get_table(_key).collect()
+
+    def reset_tables(self):
+        """reset all tables back to initial state"""
         for table in self.tables.values():
             table.reset()
+            
+    def reset(self, _key: str):
+        """reset a particular table"""
+        self.get_table(_key).reset()
 
     def reset_all_dwnstreams(self):
         for table in self.tables.values():
