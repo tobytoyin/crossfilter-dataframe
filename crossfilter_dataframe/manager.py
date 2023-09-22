@@ -29,6 +29,10 @@ class TablesManager:
 
     def get_table(self, _key: str) -> Table:
         return self.tables[_key]
+    
+    def reset_table(self):
+        for table in self.tables.values():
+            table.reset()
 
     def reset_all_dwnstreams(self):
         for table in self.tables.values():

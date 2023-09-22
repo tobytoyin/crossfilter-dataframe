@@ -32,6 +32,8 @@ class CrossFilters:
     def collect(self, _key: str):
         return self.tables_manager.get_table(_key).collect()
                 
+    def reset_tables(self):
+        return self.reset_tables()
         
 if __name__ == '__main__':
     pass
