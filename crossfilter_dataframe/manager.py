@@ -60,5 +60,5 @@ class TablesManager:
 
         # get the keys
         keys = self.join_keys[root][dwnstream]
-        relations = TableRelation(table=next_table, fkeys=keys[PRIMARY_KEY], pkeys=keys[FOREIGN_KEY])
+        relations = TableRelation(table=next_table, fkeys=keys[FOREIGN_KEY], pkeys=keys[PRIMARY_KEY])
         root_table.add_downstream(relations)

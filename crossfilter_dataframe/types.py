@@ -12,7 +12,7 @@ JoinKeys = Dict[Literal['pkeys', 'fkeys'], Keys]
 Relational  = Dict[str, JoinKeys]
 RelationalMap = Dict[str, Relational]
 NodeCallbackFn = Callable[[str, str], Any]
-TableRelation = namedtuple('TableRelation', 'table fkeys pkeys')
+TableRelation = namedtuple('TableRelation', 'table pkeys fkeys')
 
 # Generics
 Data = TypeVar('Data')  # Generic for external library data structure
