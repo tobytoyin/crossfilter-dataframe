@@ -8,14 +8,11 @@ from typing import Generic, List
 from ..types import Data, Keys, TableRelation
 
 
-@dataclass
 class TableAdapter(ABC, Generic[Data]):
     """Adapter to translate the adaptee module functions as an interface for `Table`"""
-    data: Data
-
-    def __post_init__(self):
-        self.source = copy(self.data)  # copy of the original data
-
+    def __init__(self, data: Data, *args, **kwargs) -> None:
+        self.data = data
+        self.source = copy(data)
 
     def __call__(self, *args) -> Data:
         """.data can be lazily evaluated through session. __call__ would collect data"""
@@ -74,9 +71,10 @@ class TableAdapter(ABC, Generic[Data]):
         ...
 
 
-@dataclass
-class Table(TableAdapter):
-    dwnstream_rel: List[TableRelation] = field(default_factory=list)
+class Table(TableAdapter, Generic[Data]):
+    def __init__(self, data: Data, *args, **kwargs) -> None:
+        super().__init__(data)
+        self.dwnstream_rel: List[TableRelation] = []
 
     ### Downstreams managements
     def clear_downstreams(self):
