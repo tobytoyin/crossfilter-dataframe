@@ -7,8 +7,18 @@ from ...types import ROOT_NODE, NodeCallbackFn
 
 
 class DAGExecutor:
-    """DAGCallChain walks along the nodes of a DAG and invoke callbacks function at each walk"""
+    """Walks a DiGraph and apply function to the paired Nodes 
 
+    DAGExecutor is purposed to apply custom function to the paired Nodes.\
+    This involves: 
+    1. walking along the DiGraph at topological order 
+    2. at each walk, invokes a list of callback functions by \
+        passing the current node and the neighbour node to the function
+    3. function results are append to the results return list 
+    4. walk until the Digraph is completed
+    
+    """
+    
     def __init__(self, dag: nx.DiGraph) -> None:
         self.dag = dag
         self._callbacks: List[NodeCallbackFn] = []
